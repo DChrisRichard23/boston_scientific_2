@@ -156,6 +156,18 @@ view: superstore_orders {
     value_format: "$#,###.00"
   }
 
+  measure: min_sales {
+    type: min
+    sql: ${sales_in} ;;
+    value_format: "$#,###.00"
+  }
+
+  measure: max_sales {
+    type: max
+    sql: ${sales_in} ;;
+    value_format: "$#,###.00"
+  }
+
   measure: adjusted_margin {
     type: number
     sql: 3.5000*(${total_profit}/${total_sales})  ;;
@@ -165,6 +177,18 @@ view: superstore_orders {
   measure: average_sales {
     type: average
     sql: ${sales_in} ;;
+    value_format: "$#,###.00"
+  }
+
+  measure: average_sales_minus_min_sales {
+    type: number
+    sql: ${average_sales} - ${min_sales} ;;
+    value_format: "$#,###.00"
+  }
+
+  measure: max_sales_minus_average_sales {
+    type: number
+    sql: ${max_sales} -  ${average_sales} ;;
     value_format: "$#,###.00"
   }
 
@@ -294,6 +318,10 @@ view: superstore_orders {
       value: "day"
     }
     allowed_value: {
+      label: "by Week"
+      value: "week"
+    }
+    allowed_value: {
       label: "by Month"
       value: "month"
     }
@@ -311,6 +339,8 @@ view: superstore_orders {
     sql:
     {% if date_granularity._parameter_value == 'day' %}
       ${order_date}
+    {% elsif date_granularity._parameter_value == 'week' %}
+      ${order_week}
     {% elsif date_granularity._parameter_value == 'month' %}
       ${order_month}
     {% elsif date_granularity._parameter_value == 'quarter' %}
