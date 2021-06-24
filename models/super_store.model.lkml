@@ -10,4 +10,10 @@ datagroup: super_store_default_datagroup {
 
 persist_with: super_store_default_datagroup
 
-explore: superstore_orders {}
+explore: superstore_orders {
+  join: one_row_table {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: 1 = 1 ;;
+  }
+}

@@ -15,7 +15,7 @@ view: superstore_orders {
             WHEN ${category} = 'Office Supplies' THEN 'Optometry'
             WHEN ${category} = 'Furniture' THEN 'Imaging'
         END;;
-    html: <a href="/dashboards-next/137?Franchise={{ value }}">{{ value }}</a> ;;
+    html: <a href="/dashboards-next/139">{{ value }}</a> ;;
   }
 
   dimension: city {
@@ -184,8 +184,7 @@ view: superstore_orders {
   measure: average_sales {
     type: average
     sql: ${sales_in} ;;
-    value_format: "$#,###.00"
-    html: <a href="/dashboards-next/120?Customer+Name={{ value }}">{{ value }}</a> ;;
+    value_format: "$#,##0.00"
   }
 
   measure: average_sales_minus_min_sales {
@@ -257,6 +256,7 @@ view: superstore_orders {
             WHEN ${sub_category} = 'Supplies' THEN 'Catheter'
             WHEN ${sub_category} = 'Tables' THEN 'Wire'
         END;;
+     html: <a href="/dashboards-next/137?Family={{ value }}">{{ value }}</a> ;;
   }
 
   measure: count {
