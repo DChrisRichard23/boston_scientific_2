@@ -3,9 +3,18 @@ view: superstore_orders {
     ;;
 
   dimension: category {
-    label: "Franchise"
+    hidden: yes
     type: string
     sql: ${TABLE}.Category ;;
+  }
+
+  dimension: franchise {
+    type: string
+    sql: CASE
+            WHEN ${category} = 'Technology' THEN 'Pathology'
+            WHEN ${category} = 'Office Supplies' THEN 'Optometry'
+            WHEN ${category} = 'Furniture' THEN 'Imaging'
+        END;;
   }
 
   dimension: city {
@@ -190,6 +199,7 @@ view: superstore_orders {
   }
 
   dimension: sub_category {
+    hidden: yes
     type: string
     sql: ${TABLE}.Sub_Category ;;
   }
@@ -221,4 +231,95 @@ view: superstore_orders {
     type: count
     drill_fields: [customer_name, product_name]
   }
+
+  parameter: metric_to_view {
+    type: string
+    allowed_value: {
+      label: "Total Sales"
+      value: "total_sales"
+    }
+    allowed_value: {
+      label: "Average Sales"
+      value: "average_sales"
+    }
+    allowed_value: {
+      label: "Total Profit"
+      value: "total_profit"
+    }
+    allowed_value: {
+      label: "Average Profit"
+      value: "average_profit"
+    }
+    allowed_value: {
+      label: "Total Quanity"
+      value: "total_quantity"
+    }
+    allowed_value: {
+      label: "Average Quanity"
+      value: "average_quantity"
+    }
+    allowed_value: {
+      label: "Adjusted Margin"
+      value: "adjusted_margin"
+    }
+  }
+
+  measure: dynamic_metric {
+    type: number
+    sql:
+    CASE
+      WHEN {% parameter metric_to_view %} = 'total_sales'
+      THEN ${total_sales}
+      WHEN {% parameter metric_to_view %} = 'average_sales'
+      THEN ${average_sales}
+      WHEN {% parameter metric_to_view %} = 'total_profit'
+      THEN ${total_profit}
+      WHEN {% parameter metric_to_view %} = 'average_profit'
+      THEN ${average_profit}
+      WHEN {% parameter metric_to_view %} = 'total_quantity'
+      THEN ${total_quantity}
+      WHEN {% parameter metric_to_view %} = 'average_quantity'
+      THEN ${average_quantity}
+      WHEN {% parameter metric_to_view %} = 'adjusted_margin'
+      THEN ${adjusted_margin}
+      ELSE NULL
+    END ;;
+    value_format_name: "usd"
+  }
+
+  parameter: date_granularity {
+    type: unquoted
+    allowed_value: {
+      label: "by Day"
+      value: "day"
+    }
+    allowed_value: {
+      label: "by Month"
+      value: "month"
+    }
+    allowed_value: {
+      label: "by Quarter"
+      value: "quarter"
+    }
+    allowed_value: {
+      label: "by Year"
+      value: "year"
+    }
+  }
+
+  dimension: date {
+    sql:
+    {% if date_granularity._parameter_value == 'day' %}
+      ${order_date}
+    {% elsif date_granularity._parameter_value == 'month' %}
+      ${order_month}
+    {% elsif date_granularity._parameter_value == 'quarter' %}
+      ${order_quarter}
+    {% elsif date_granularity._parameter_value == 'year' %}
+      ${order_year}
+    {% else %}
+      ${order_date}
+    {% endif %};;
+  }
+
 }
