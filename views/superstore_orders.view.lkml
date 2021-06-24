@@ -15,6 +15,7 @@ view: superstore_orders {
             WHEN ${category} = 'Office Supplies' THEN 'Optometry'
             WHEN ${category} = 'Furniture' THEN 'Imaging'
         END;;
+    html: <a href="/dashboards-next/137?Franchise={{ value }}">{{ value }}</a> ;;
   }
 
   dimension: city {
@@ -91,6 +92,12 @@ view: superstore_orders {
     label: "SKU"
     type: string
     sql: ${TABLE}.Product_ID ;;
+  }
+
+  measure: product_count {
+    label: "SKU Count"
+    type: count_distinct
+    sql: ${product_id} ;;
   }
 
   dimension: product_name {
@@ -178,6 +185,7 @@ view: superstore_orders {
     type: average
     sql: ${sales_in} ;;
     value_format: "$#,###.00"
+    html: <a href="/dashboards-next/120?Customer+Name={{ value }}">{{ value }}</a> ;;
   }
 
   measure: average_sales_minus_min_sales {
@@ -349,6 +357,36 @@ view: superstore_orders {
       ${order_year}
     {% else %}
       ${order_date}
+    {% endif %};;
+  }
+
+  parameter: number_of_standard_deviations_parameter {
+    type: unquoted
+    allowed_value: {
+      label: "One"
+      value: "1"
+    }
+    allowed_value: {
+      label: "Two"
+      value: "2"
+    }
+    allowed_value: {
+      label: "Three"
+      value: "3"
+    }
+  }
+
+  dimension: number_of_standard_deviations_dimension {
+    type: number
+sql:
+    {% if number_of_standard_deviations_parameter._parameter_value == '1' %}
+    1
+    {% elsif number_of_standard_deviations_parameter._parameter_value == '2' %}
+    2
+    {% elsif number_of_standard_deviations_parameter._parameter_value == '3' %}
+    3
+    {% else %}
+    1
     {% endif %};;
   }
 
