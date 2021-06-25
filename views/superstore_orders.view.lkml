@@ -189,7 +189,7 @@ view: superstore_orders {
 
   measure: average_sales_minus_min_sales {
     type: number
-    sql: ${average_sales} - ${min_sales} ;;
+    sql: CASE WHEN ${average_sales} - ${min_sales} = 0 THEN ${min_sales} + 1 ELSE ${average_sales} - ${min_sales} END ;;
     value_format: "$#,###.00"
   }
 
