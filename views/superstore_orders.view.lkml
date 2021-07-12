@@ -181,7 +181,7 @@ view: superstore_orders {
   }
 
   dimension: sales_in {
-    hidden: yes
+    # hidden: yes
     type: number
     sql: ${TABLE}.Sales ;;
   }
