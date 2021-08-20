@@ -169,6 +169,19 @@ view: superstore_orders {
       sql: ${TABLE}.Product_Name ;;
     }
 
+    dimension: cogs_in {
+      hidden: yes
+      type: number
+      sql: ${TABLE}.COGS ;;
+    }
+
+  measure: total_cogs {
+    label: "Total COGS"
+    type: sum
+    sql: ${cogs_in} ;;
+    value_format: "#,###.00"
+  }
+
     dimension: profit_in {
       hidden: yes
       type: number

@@ -114,6 +114,11 @@ view: order_date_table {
     sql: ${TABLE}.this_year_flag ;;
   }
 
+  dimension: year_to_date_flag {
+    type: number
+    sql: ${TABLE}.year_to_date_flag ;;
+  }
+
   dimension: today_flag {
     type: number
     sql: ${TABLE}.today_flag ;;
