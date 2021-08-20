@@ -1,4 +1,5 @@
 connection: "super_store"
+label: "Boston Scientific"
 
 # include all the views
 include: "/views/**/*.view"
@@ -11,6 +12,7 @@ datagroup: super_store_default_datagroup {
 persist_with: super_store_default_datagroup
 
 explore: superstore_orders {
+  label: "Orders"
   join: one_row_table {
     type: left_outer
     relationship: many_to_one
