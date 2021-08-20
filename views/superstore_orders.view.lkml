@@ -16,257 +16,314 @@ view: superstore_orders {
             WHEN ${category} = 'Furniture' THEN 'Imaging'
         END;;
     #html: <a href="/dashboards-next/139">{{ value }}</a> ;;
-  }
+    }
 
-  dimension: franchise_2 {
-    type: string
-    sql: ${franchise} ;;
-    html: <a href="/dashboards-next/142">{{ value }}</a> ;;
-  }
+    dimension: franchise_2 {
+      type: string
+      sql: ${franchise} ;;
+      html: <a href="/dashboards-next/142">{{ value }}</a> ;;
+    }
 
-  dimension: franchise_3 {
-    type: string
-    sql: ${franchise} ;;
-    html: <a href="/dashboards-next/143">{{ value }}</a> ;;
-  }
+    dimension: franchise_3 {
+      type: string
+      sql: ${franchise} ;;
+      html: <a href="/dashboards-next/143">{{ value }}</a> ;;
+    }
 
-  dimension: franchise_4 {
-    type: string
-    sql: ${franchise} ;;
-    html: <a href="/dashboards-next/141">{{ value }}</a> ;;
-  }
+    dimension: franchise_4 {
+      type: string
+      sql: ${franchise} ;;
+      html: <a href="/dashboards-next/141">{{ value }}</a> ;;
+    }
 
-  dimension: franchise_5 {
-    type: string
-    sql: ${franchise} ;;
-    html: <a href="/dashboards-next/144?Franchise={{ value }}">{{ value }}</a> ;;
-  }
+    dimension: franchise_5 {
+      type: string
+      sql: ${franchise} ;;
+      html: <a href="/dashboards-next/144?Franchise={{ value }}">{{ value }}</a> ;;
+    }
 
-  dimension: franchise_family {
-    type: string
-    sql: ${franchise} || '-' || ${family} ;;
-  }
+    dimension: franchise_6 {
+      type: string
+      sql: ${franchise} ;;
+      html: <a href="/dashboards-next/162?Franchise={{ value }}">{{ value }}</a> ;;
+    }
 
-  dimension: city {
-    type: string
-    sql: ${TABLE}.City ;;
-  }
+    dimension: franchise_7 {
+      type: string
+      sql: ${franchise} ;;
+      html: <a href="/dashboards-next/163?Franchise={{ value }}">{{ value }}</a> ;;
+    }
 
-  dimension: country_region {
-    label: "Country/Region"
-    type: string
-    sql: ${TABLE}.Country_Region ;;
-  }
+    dimension: franchise_8 {
+      type: string
+      sql: ${franchise} ;;
+      html: <a href="/dashboards-next/164?Franchise={{ value }}">{{ value }}</a> ;;
+    }
 
-  dimension: customer_id {
-    type: string
-    sql: ${TABLE}.Customer_ID ;;
-  }
+    dimension: franchise_9 {
+      type: string
+      sql: ${franchise} ;;
+    }
 
-  measure: customers {
-    type: count_distinct
-    sql: ${customer_id} ;;
-    value_format: "#,###"
-  }
+    dimension: franchise_10 {
+      type: string
+      sql: ${franchise} ;;
+      html: <a href="/dashboards-next/166?Franchise={{ value }}">{{ value }}</a> ;;
+    }
 
-  dimension: customer_name {
-    type: string
-    sql: ${TABLE}.Customer_Name ;;
-  }
+    dimension: franchise_family {
+      type: string
+      sql: ${franchise} || '-' || ${family} ;;
+    }
 
-  dimension: discount_in {
-    hidden: yes
-    type: number
-    sql: ${TABLE}.Discount ;;
-  }
+    dimension: city {
+      type: string
+      sql: ${TABLE}.City ;;
+    }
 
-  measure: discount_percent {
-    type: number
-    sql: (SUM(${discount_in}*${sales_in})/SUM(${sales_in}))*100.00 ;;
-    value_format: "0.00\%"
-  }
+    dimension: country_region {
+      label: "Country/Region"
+      type: string
+      sql: ${TABLE}.Country_Region ;;
+    }
 
-  dimension_group: order {
-    type: time
-    timeframes: [
-      raw,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    convert_tz: no
-    datatype: date
-    sql: ${TABLE}.Order_Date ;;
-  }
+    dimension: customer_id {
+      type: string
+      sql: ${TABLE}.Customer_ID ;;
+    }
 
-  dimension: order_id {
-    type: string
-    sql: ${TABLE}.Order_ID ;;
-  }
+    measure: customers {
+      type: count_distinct
+      sql: ${customer_id} ;;
+      value_format: "#,###"
+    }
 
-  measure: orders {
-    type: count_distinct
-    sql: ${order_id} ;;
-    value_format: "#,###"
-  }
+    dimension: customer_name {
+      type: string
+      sql: ${TABLE}.Customer_Name ;;
+    }
 
-  dimension: postal_code {
-    type: number
-    sql: ${TABLE}.Postal_Code ;;
-  }
+    dimension: discount_in {
+      hidden: yes
+      type: number
+      sql: ${TABLE}.Discount ;;
+    }
 
-  dimension: product_id {
-    label: "SKU"
-    type: string
-    sql: ${TABLE}.Product_ID ;;
-  }
+    measure: discount_percent {
+      type: number
+      sql: (SUM(${discount_in}*${sales_in})/SUM(${sales_in}))*100.00 ;;
+      value_format: "0.00\%"
+    }
 
-  measure: product_count {
-    label: "SKU Count"
-    type: count_distinct
-    sql: ${product_id} ;;
-  }
+    set: order_date_drill_fields {
+      fields: [order_id, order_date, customer_name, city, product_name]
+    }
 
-  dimension: product_name {
-    type: string
-    sql: ${TABLE}.Product_Name ;;
-  }
 
-  dimension: profit_in {
-    hidden: yes
-    type: number
-    sql: ${TABLE}.Profit ;;
-  }
+    dimension_group: order {
+      type: time
+      timeframes: [
+        raw,
+        date,
+        week,
+        month,
+        quarter,
+        year
+      ]
+      convert_tz: no
+      datatype: date
+      sql: ${TABLE}.Order_Date ;;
+      drill_fields: [order_date_drill_fields*]
+    }
 
-  measure: total_profit {
-    type: sum
-    sql: ${profit_in} ;;
-    value_format: "#,###.00"
-  }
+    dimension: order_id {
+      type: string
+      sql: ${TABLE}.Order_ID ;;
+    }
 
-  measure: average_profit {
-    type: average
-    sql: ${profit_in} ;;
-    value_format: "$#,###.00"
-  }
+    measure: orders {
+      type: count_distinct
+      sql: ${order_id} ;;
+      value_format: "#,###"
+    }
 
-  dimension: quantity_in {
-    hidden: yes
-    type: number
-    sql: ${TABLE}.Quantity ;;
-  }
+    dimension: postal_code {
+      type: number
+      sql: ${TABLE}.Postal_Code ;;
+    }
 
-  measure: total_quantity {
-    type: sum
-    sql: ${quantity_in} ;;
-    value_format: "#,###"
-  }
+    dimension: product_id {
+      label: "SKU"
+      type: string
+      sql: ${TABLE}.Product_ID ;;
+    }
 
-  measure: average_quantity {
-    type: average
-    sql: ${quantity_in} ;;
-    value_format: "#,###.00"
-  }
+    measure: product_count {
+      label: "SKU Count"
+      type: count_distinct
+      sql: ${product_id} ;;
+    }
 
-  dimension: region {
-    type: string
-    sql: ${TABLE}.Region ;;
-  }
+    dimension: product_name {
+      type: string
+      sql: ${TABLE}.Product_Name ;;
+    }
 
-  dimension: row_id {
-    type: number
-    sql: ${TABLE}.Row_ID ;;
-  }
+    dimension: profit_in {
+      hidden: yes
+      type: number
+      sql: ${TABLE}.Profit ;;
+    }
 
-  dimension: sales_in {
-    # hidden: yes
-    type: number
-    sql: ${TABLE}.Sales ;;
-  }
+    measure: total_profit {
+      type: sum
+      sql: ${profit_in} ;;
+      value_format: "#,###.00"
+    }
 
-  measure: total_sales {
-    type: sum
-    sql: ${sales_in} ;;
-    value_format: "$#,###.00"
-  }
+    measure: average_profit {
+      type: average
+      sql: ${profit_in} ;;
+      value_format: "$#,###.00"
+    }
 
-  measure: min_sales {
-    type: min
-    sql: ${sales_in} ;;
-    value_format: "$#,###.00"
-  }
+    dimension: quantity_in {
+      hidden: yes
+      type: number
+      sql: ${TABLE}.Quantity ;;
+    }
 
-  measure: max_sales {
-    type: max
-    sql: ${sales_in} ;;
-    value_format: "$#,###.00"
-  }
+    measure: total_quantity {
+      type: sum
+      sql: ${quantity_in} ;;
+      value_format: "#,###"
+    }
 
-  measure: adjusted_margin {
-    type: number
-    sql: 3.5000*(${total_profit}/${total_sales})  ;;
-    value_format: "#.0000"
-  }
+    measure: average_quantity {
+      type: average
+      sql: ${quantity_in} ;;
+      value_format: "#,###.00"
+    }
 
-  measure: average_sales {
-    type: average
-    sql: ${sales_in} ;;
-    value_format: "$#,##0.00"
-  }
+    dimension: region {
+      type: string
+      sql: ${TABLE}.Region ;;
+    }
 
-  measure: average_sales_minus_min_sales {
-    type: number
-    sql: CASE WHEN ${average_sales} - ${min_sales} = 0 THEN ${min_sales} + 1 ELSE ${average_sales} - ${min_sales} END ;;
-    value_format: "$#,###.00"
-  }
+    dimension: row_id {
+      primary_key: yes
+      type: number
+      sql: ${TABLE}.Row_ID ;;
+    }
 
-  measure: max_sales_minus_average_sales {
-    type: number
-    sql: ${max_sales} -  ${average_sales} ;;
-    value_format: "$#,###.00"
-  }
+    dimension: sales_in {
+      hidden: yes
+      type: number
+      sql: ${TABLE}.Sales ;;
+    }
 
-  dimension: segment {
-    type: string
-    sql: ${TABLE}.Segment ;;
-  }
+    measure: total_sales {
+      type: sum
+      sql: ${sales_in} ;;
+      value_format: "$#,###.00"
+    }
 
-  dimension_group: ship {
-    type: time
-    timeframes: [
-      raw,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    convert_tz: no
-    datatype: date
-    sql: ${TABLE}.Ship_Date ;;
-  }
+    measure: total_sales_2019 {
+      type: sum
+      sql: ${sales_in} ;;
+      filters: [order_year: "2019"]
+      value_format: "$#,###.00"
+    }
 
-  dimension: ship_mode {
-    type: string
-    sql: ${TABLE}.Ship_Mode ;;
-  }
+    measure: total_sales_2020 {
+      type: sum
+      sql: ${sales_in} ;;
+      filters: [order_year: "2020"]
+      value_format: "$#,###.00"
+    }
 
-  dimension: state {
-    type: string
-    sql: ${TABLE}.State ;;
-  }
+    measure: total_sales_2021 {
+      type: sum
+      sql: ${sales_in} ;;
+      filters: [order_year: "2021"]
+      value_format: "$#,###.00"
+    }
 
-  dimension: sub_category {
-    hidden: yes
-    type: string
-    sql: ${TABLE}.Sub_Category ;;
-  }
+    measure: min_sales {
+      type: min
+      sql: ${sales_in} ;;
+      value_format: "$#,###.00"
+    }
 
-  dimension: family {
-    type: string
-    sql: CASE
+    measure: max_sales {
+      type: max
+      sql: ${sales_in} ;;
+      value_format: "$#,###.00"
+    }
+
+    measure: adjusted_margin {
+      type: number
+      sql: 3.5000*(${total_profit}/${total_sales})  ;;
+      value_format: "0.00%"
+    }
+
+    measure: average_sales {
+      type: average
+      sql: ${sales_in} ;;
+      value_format: "$#,##0.00"
+    }
+
+    measure: average_sales_minus_min_sales {
+      type: number
+      sql: CASE WHEN ${average_sales} - ${min_sales} = 0 THEN ${min_sales} + 1 ELSE ${average_sales} - ${min_sales} END ;;
+      value_format: "$#,###.00"
+    }
+
+    measure: max_sales_minus_average_sales {
+      type: number
+      sql: ${max_sales} -  ${average_sales} ;;
+      value_format: "$#,###.00"
+    }
+
+    dimension: segment {
+      type: string
+      sql: ${TABLE}.Segment ;;
+    }
+
+    dimension_group: ship {
+      type: time
+      timeframes: [
+        raw,
+        date,
+        week,
+        month,
+        quarter,
+        year
+      ]
+      convert_tz: no
+      datatype: date
+      sql: ${TABLE}.Ship_Date ;;
+    }
+
+    dimension: ship_mode {
+      type: string
+      sql: ${TABLE}.Ship_Mode ;;
+    }
+
+    dimension: state {
+      type: string
+      sql: ${TABLE}.State ;;
+    }
+
+    dimension: sub_category {
+      hidden: yes
+      type: string
+      sql: ${TABLE}.Sub_Category ;;
+    }
+
+    dimension: family {
+      type: string
+      sql: CASE
             WHEN ${sub_category} = 'Accessories' THEN 'Bridge'
             WHEN ${sub_category} = 'Appliances' THEN 'Bandage'
             WHEN ${sub_category} = 'Art' THEN 'Funnel'
@@ -285,129 +342,140 @@ view: superstore_orders {
             WHEN ${sub_category} = 'Supplies' THEN 'Catheter'
             WHEN ${sub_category} = 'Tables' THEN 'Wire'
         END;;
-     html: <a href="/dashboards-next/137?Family={{ value }}">{{ value }}</a> ;;
-  }
+      html: <a href="/dashboards-next/137?Family={{ value }}">{{ value }}</a> ;;
+    }
 
-  measure: count {
-    type: count
-    drill_fields: [customer_name, product_name]
-  }
+    dimension: family_2 {
+      type: string
+      sql: ${family} ;;
+    }
 
-  parameter: metric_to_view {
-    type: string
-    allowed_value: {
-      label: "Total Sales"
-      value: "total_sales"
+    dimension: family_3 {
+      type: string
+      sql: ${family} ;;
+      html: <a href="/dashboards-next/165?Family={{ value }}">{{ value }}</a> ;;
     }
-    allowed_value: {
-      label: "Average Sales"
-      value: "average_sales"
-    }
-    allowed_value: {
-      label: "Total Profit"
-      value: "total_profit"
-    }
-    allowed_value: {
-      label: "Average Profit"
-      value: "average_profit"
-    }
-    allowed_value: {
-      label: "Total Quanity"
-      value: "total_quantity"
-    }
-    allowed_value: {
-      label: "Average Quanity"
-      value: "average_quantity"
-    }
-    allowed_value: {
-      label: "Adjusted Margin"
-      value: "adjusted_margin"
-    }
-  }
 
-  measure: dynamic_metric {
-    type: number
-    sql:
-    CASE
-      WHEN {% parameter metric_to_view %} = 'total_sales'
-      THEN ${total_sales}
-      WHEN {% parameter metric_to_view %} = 'average_sales'
-      THEN ${average_sales}
-      WHEN {% parameter metric_to_view %} = 'total_profit'
-      THEN ${total_profit}
-      WHEN {% parameter metric_to_view %} = 'average_profit'
-      THEN ${average_profit}
-      WHEN {% parameter metric_to_view %} = 'total_quantity'
-      THEN ${total_quantity}
-      WHEN {% parameter metric_to_view %} = 'average_quantity'
-      THEN ${average_quantity}
-      WHEN {% parameter metric_to_view %} = 'adjusted_margin'
-      THEN ${adjusted_margin}
-      ELSE NULL
-    END ;;
-    value_format_name: "usd"
-  }
+    measure: count {
+      type: count
+      drill_fields: [customer_name, product_name]
+    }
 
-  parameter: date_granularity {
-    type: unquoted
-    allowed_value: {
-      label: "by Day"
-      value: "day"
+    parameter: metric_to_view {
+      type: string
+      allowed_value: {
+        label: "Total Sales"
+        value: "total_sales"
+      }
+      allowed_value: {
+        label: "Average Sales"
+        value: "average_sales"
+      }
+      allowed_value: {
+        label: "Total Profit"
+        value: "total_profit"
+      }
+      allowed_value: {
+        label: "Average Profit"
+        value: "average_profit"
+      }
+      allowed_value: {
+        label: "Total Quanity"
+        value: "total_quantity"
+      }
+      allowed_value: {
+        label: "Average Quanity"
+        value: "average_quantity"
+      }
+      allowed_value: {
+        label: "Adjusted Margin"
+        value: "adjusted_margin"
+      }
     }
-    allowed_value: {
-      label: "by Week"
-      value: "week"
-    }
-    allowed_value: {
-      label: "by Month"
-      value: "month"
-    }
-    allowed_value: {
-      label: "by Quarter"
-      value: "quarter"
-    }
-    allowed_value: {
-      label: "by Year"
-      value: "year"
-    }
-  }
 
-  dimension: date {
-    sql:
-    {% if date_granularity._parameter_value == 'day' %}
-      ${order_date}
-    {% elsif date_granularity._parameter_value == 'week' %}
-      ${order_week}
-    {% elsif date_granularity._parameter_value == 'month' %}
-      ${order_month}
-    {% elsif date_granularity._parameter_value == 'quarter' %}
-      ${order_quarter}
-    {% elsif date_granularity._parameter_value == 'year' %}
-      ${order_year}
-    {% else %}
-      ${order_date}
-    {% endif %};;
-  }
+    measure: dynamic_metric {
+      type: number
+      sql:
+          CASE
+            WHEN {% parameter metric_to_view %} = 'total_sales'
+            THEN ${total_sales}
+            WHEN {% parameter metric_to_view %} = 'average_sales'
+            THEN ${average_sales}
+            WHEN {% parameter metric_to_view %} = 'total_profit'
+            THEN ${total_profit}
+            WHEN {% parameter metric_to_view %} = 'average_profit'
+            THEN ${average_profit}
+            WHEN {% parameter metric_to_view %} = 'total_quantity'
+            THEN ${total_quantity}
+            WHEN {% parameter metric_to_view %} = 'average_quantity'
+            THEN ${average_quantity}
+            WHEN {% parameter metric_to_view %} = 'adjusted_margin'
+            THEN ${adjusted_margin}
+            ELSE NULL
+          END ;;
+      value_format_name: "usd"
+    }
 
-  parameter: number_of_standard_deviations_parameter {
-    type: unquoted
-    allowed_value: {
-      label: "One"
-      value: "1"
+    parameter: date_granularity {
+      type: unquoted
+      allowed_value: {
+        label: "by Day"
+        value: "day"
+      }
+      allowed_value: {
+        label: "by Week"
+        value: "week"
+      }
+      allowed_value: {
+        label: "by Month"
+        value: "month"
+      }
+      allowed_value: {
+        label: "by Quarter"
+        value: "quarter"
+      }
+      allowed_value: {
+        label: "by Year"
+        value: "year"
+      }
     }
-    allowed_value: {
-      label: "Two"
-      value: "2"
-    }
-    allowed_value: {
-      label: "Three"
-      value: "3"
-    }
-  }
 
-  dimension: number_of_standard_deviations_dimension {
-    type: number
-    sql:
+    dimension: date {
+      sql:
+          {% if date_granularity._parameter_value == 'day' %}
+            ${order_date}
+          {% elsif date_granularity._parameter_value == 'week' %}
+            ${order_week}
+          {% elsif date_granularity._parameter_value == 'month' %}
+            ${order_month}
+          {% elsif date_granularity._parameter_value == 'quarter' %}
+            ${order_quarter}
+          {% elsif date_granularity._parameter_value == 'year' %}
+            ${order_year}
+          {% else %}
+            ${order_date}
+          {% endif %};;
+    }
+
+    parameter: number_of_standard_deviations_parameter {
+      type: unquoted
+      allowed_value: {
+        label: "One"
+        value: "1"
+      }
+      allowed_value: {
+        label: "Two"
+        value: "2"
+      }
+      allowed_value: {
+        label: "Three"
+        value: "3"
+      }
+    }
+
+    dimension: number_of_standard_deviations_dimension {
+      type: number
+      sql:
       {% if number_of_standard_deviations_parameter._parameter_value == '1' %}
       1
       {% elsif number_of_standard_deviations_parameter._parameter_value == '2' %}
@@ -417,6 +485,6 @@ view: superstore_orders {
       {% else %}
       1
       {% endif %};;
-  }
+    }
 
-}
+  }

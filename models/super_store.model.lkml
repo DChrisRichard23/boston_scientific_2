@@ -16,4 +16,14 @@ explore: superstore_orders {
     relationship: many_to_one
     sql_on: 1 = 1 ;;
   }
+  join: order_date_table {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${superstore_orders.order_date} = ${order_date_table.date_raw} ;;
+  }
+  join: ship_date_table {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${superstore_orders.ship_date} = ${ship_date_table.date_raw} ;;
+  }
 }
