@@ -156,6 +156,10 @@ view: superstore_orders {
       label: "SKU"
       type: string
       sql: ${TABLE}.Product_ID ;;
+      link: {
+        label: "SKU-level dashboard"
+        url: "https://mavenwave.looker.com/dashboards-next/167?SKU={{ value }}"
+      }
     }
 
     measure: product_count {
