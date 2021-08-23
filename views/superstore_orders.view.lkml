@@ -15,8 +15,31 @@ view: superstore_orders {
             WHEN ${category} = 'Office Supplies' THEN 'Optometry'
             WHEN ${category} = 'Furniture' THEN 'Imaging'
         END;;
-    #html: <a href="/dashboards-next/139">{{ value }}</a> ;;
     }
+
+  dimension: franchise_with_link_to_family_view {
+    type: string
+    sql: ${franchise} ;;
+    html: @{href_family_view} ;;
+  }
+
+  dimension: franchise_with_link_to_sku_profitability_view {
+    type: string
+    sql: ${franchise} ;;
+    html: @{href_sku_profitability_view} ;;
+  }
+
+  dimension: franchise_with_link_to_sku_view_franchise_only {
+    type: string
+    sql: ${franchise} ;;
+    html: @{href_sku_view_franchise_only} ;;
+  }
+
+  dimension: franchise_with_link_to_sku_profitability_view_sku_view_franchise_only {
+    type: string
+    sql: ${franchise} ;;
+    html: @{href_sku_profitability_view_sku_view_franchise_only} ;;
+  }
 
     dimension: franchise_2 {
       type: string
