@@ -158,7 +158,7 @@ view: superstore_orders {
       sql: ${TABLE}.Product_ID ;;
       link: {
         label: "SKU-level dashboard"
-        url: "https://mavenwave.looker.com/dashboards-next/167?SKU={{ value }}"
+        url: "/dashboards-next/167?SKU={{ value }}"
       }
     }
 
