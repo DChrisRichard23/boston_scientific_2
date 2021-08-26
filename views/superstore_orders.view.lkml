@@ -156,10 +156,11 @@ view: superstore_orders {
       label: "SKU"
       type: string
       sql: ${TABLE}.Product_ID ;;
-      link: {
-        label: "SKU-level dashboard"
-        url: "/dashboards-next/167?SKU={{ value }}"
-      }
+      # link: {
+      #   label: "SKU-level dashboard"
+      #   url: "/dashboards-next/167?SKU={{ value }}"
+      # }
+      html: <a href="/dashboards-next/167?SKU={{ value }}">{{ value }}</a> ;;
     }
 
     measure: product_count {
@@ -197,6 +198,27 @@ view: superstore_orders {
       sql: ${profit_in} ;;
       value_format: "#,###.00"
     }
+
+  measure: total_profit_2019 {
+    type: sum
+    sql: ${profit_in} ;;
+    filters: [order_year: "2019"]
+    value_format: "$#,###.00"
+  }
+
+  measure: total_profit_2020 {
+    type: sum
+    sql: ${profit_in} ;;
+    filters: [order_year: "2020"]
+    value_format: "$#,###.00"
+  }
+
+  measure: total_profit_2021 {
+    type: sum
+    sql: ${profit_in} ;;
+    filters: [order_year: "2021"]
+    value_format: "$#,###.00"
+  }
 
     measure: average_profit {
       type: average

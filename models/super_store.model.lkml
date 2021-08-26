@@ -6,7 +6,7 @@ include: "/views/**/*.view"
 
 datagroup: super_store_default_datagroup {
   # sql_trigger: SELECT MAX(id) FROM etl_log;;
-  max_cache_age: "1 hour"
+  max_cache_age: "1000 hour"
 }
 
 persist_with: super_store_default_datagroup
