@@ -104,10 +104,56 @@ view: +superstore_orders {
     value_format_name: usd_0
   }
 
-  measure: sales_percent_change {
+  measure: total_sales_percent_change {
     view_label: "Period over Period"
     type: number
     sql: 1.0*(${total_sales_this_period}-${total_sales_prior_period})/NULLIF(${total_sales_prior_period},0) ;;
+    value_format_name: percent_1
+  }
+
+  measure: total_profit_this_period {
+    view_label: "Period over Period"
+    type: sum
+    sql: ${superstore_orders.profit_in} ;;
+    filters: [period_selected: "This {% parameter period %} to Date"]
+    value_format_name: usd_0
+  }
+
+  measure: total_profit_prior_period {
+    view_label: "Period over Period"
+    type: sum
+    sql: ${superstore_orders.profit_in} ;;
+    filters: [period_selected: "Prior {% parameter period %} to Date"]
+    value_format_name: usd_0
+  }
+
+  measure: total_profit_percent_change {
+    view_label: "Period over Period"
+    type: number
+    sql: 1.0*(${total_profit_this_period}-${total_profit_prior_period})/NULLIF(${total_profit_prior_period},0) ;;
+    value_format_name: percent_1
+  }
+
+  measure: total_cusotmers_this_period {
+    view_label: "Period over Period"
+    type: count_distinct
+    sql: ${superstore_orders.customer_id} ;;
+    filters: [period_selected: "This {% parameter period %} to Date"]
+    value_format: "#,###"
+  }
+
+  measure: total_cusotmers_prior_period {
+    view_label: "Period over Period"
+    type: count_distinct
+    sql: ${superstore_orders.customer_id} ;;
+    filters: [period_selected: "Prior {% parameter period %} to Date"]
+    value_format: "#,###"
+  }
+
+  measure: total_cusotmers_percent_change {
+    view_label: "Period over Period"
+    type: number
+    sql: 1.0*(${total_cusotmers_this_period}-${total_cusotmers_prior_period})/NULLIF(${total_cusotmers_prior_period},0) ;;
     value_format_name: percent_1
   }
 

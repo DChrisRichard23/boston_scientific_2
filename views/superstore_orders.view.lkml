@@ -15,7 +15,6 @@ view: superstore_orders {
             WHEN ${category} = 'Office Supplies' THEN 'Optometry'
             WHEN ${category} = 'Furniture' THEN 'Imaging'
         END;;
-    #html: <a href="/dashboards-next/139">{{ value }}</a> ;;
     }
 
     dimension: franchise_2 {
