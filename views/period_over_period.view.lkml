@@ -134,7 +134,7 @@ view: +superstore_orders {
     value_format_name: percent_1
   }
 
-  measure: total_cusotmers_this_period {
+  measure: total_customers_this_period {
     view_label: "Period over Period"
     type: count_distinct
     sql: ${superstore_orders.customer_id} ;;
@@ -142,7 +142,7 @@ view: +superstore_orders {
     value_format: "#,###"
   }
 
-  measure: total_cusotmers_prior_period {
+  measure: total_customers_prior_period {
     view_label: "Period over Period"
     type: count_distinct
     sql: ${superstore_orders.customer_id} ;;
@@ -150,10 +150,10 @@ view: +superstore_orders {
     value_format: "#,###"
   }
 
-  measure: total_cusotmers_percent_change {
+  measure: total_customers_percent_change {
     view_label: "Period over Period"
     type: number
-    sql: 1.0*(${total_cusotmers_this_period}-${total_cusotmers_prior_period})/NULLIF(${total_cusotmers_prior_period},0) ;;
+    sql: 1.0*(${total_customers_this_period}-${total_customers_prior_period})/NULLIF(${total_customers_prior_period},0) ;;
     value_format_name: percent_1
   }
 
