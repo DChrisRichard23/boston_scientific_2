@@ -91,11 +91,51 @@ view: superstore_orders {
       sql: ${TABLE}.Customer_ID ;;
     }
 
-    measure: customers {
+    measure: total_customers {
       type: count_distinct
       sql: ${customer_id} ;;
       value_format: "#,###"
     }
+
+  measure: total_customers_this_year_in  {
+    hidden: yes
+    type: count_distinct
+    sql: ${customer_id} ;;
+    value_format: "#,###"
+    filters: [order_date_table.this_year_flag: "1"]
+  }
+
+  measure: total_customers_this_year {
+    type: number
+    sql: NULLIF(${total_customers_this_year_in}, 0)  ;;
+    value_format: "#,###"
+  }
+
+  measure: total_customers_last_year_in  {
+    hidden: yes
+    type: count_distinct
+    sql: ${customer_id} ;;
+    value_format: "#,###"
+    filters: [order_date_table.last_year_flag: "1"]
+  }
+
+  measure: total_customers_last_year {
+    type: number
+    sql: NULLIF(${total_customers_last_year_in}, 0)  ;;
+    value_format: "#,###"
+  }
+
+  measure: total_customers_yoy_diff  {
+    type: number
+    sql: ${total_customers_this_year} - ${total_customers_last_year} ;;
+    value_format: "#,###"
+  }
+
+  measure: total_customers_yoy_pdiff  {
+    type: number
+    sql: ${total_customers_yoy_diff} / ${total_customers_last_year} ;;
+    value_format_name: percent_1
+  }
 
     dimension: customer_name {
       type: string
@@ -198,6 +238,46 @@ view: superstore_orders {
       value_format: "#,###.00"
     }
 
+  measure: total_profit_this_year_in  {
+    hidden: yes
+    type: sum
+    sql: ${profit_in} ;;
+    value_format: "$#,###.00"
+    filters: [order_date_table.this_year_flag: "1"]
+  }
+
+  measure: total_profit_this_year {
+    type: number
+    sql: NULLIF(${total_profit_this_year_in}, 0)  ;;
+    value_format: "$#,###.00"
+  }
+
+  measure: total_profit_last_year_in  {
+    hidden: yes
+    type: sum
+    sql: ${profit_in} ;;
+    value_format: "$#,###.00"
+    filters: [order_date_table.last_year_flag: "1"]
+  }
+
+  measure: total_profit_last_year {
+    type: number
+    sql: NULLIF(${total_profit_last_year_in}, 0)  ;;
+    value_format: "$#,###.00"
+  }
+
+  measure: total_profit_yoy_diff  {
+    type: number
+    sql: ${total_profit_this_year} - ${total_profit_last_year} ;;
+    value_format: "$#,###.00"
+  }
+
+  measure: total_profit_yoy_pdiff  {
+    type: number
+    sql: ${total_profit_yoy_diff} / ${total_profit_last_year} ;;
+    value_format_name: percent_1
+  }
+
   measure: total_profit_2019 {
     type: sum
     sql: ${profit_in} ;;
@@ -264,6 +344,46 @@ view: superstore_orders {
       type: sum
       sql: ${sales_in} ;;
       value_format: "$#,###.00"
+    }
+
+    measure: total_sales_this_year_in  {
+      hidden: yes
+      type: sum
+      sql: ${sales_in} ;;
+      value_format: "$#,###.00"
+      filters: [order_date_table.this_year_flag: "1"]
+    }
+
+    measure: total_sales_this_year {
+      type: number
+      sql: NULLIF(${total_sales_this_year_in}, 0)  ;;
+      value_format: "$#,###.00"
+    }
+
+    measure: total_sales_last_year_in  {
+      hidden: yes
+      type: sum
+      sql: ${sales_in} ;;
+      value_format: "$#,###.00"
+      filters: [order_date_table.last_year_flag: "1"]
+    }
+
+    measure: total_sales_last_year {
+      type: number
+      sql: NULLIF(${total_sales_last_year_in}, 0)  ;;
+      value_format: "$#,###.00"
+    }
+
+    measure: total_sales_yoy_diff  {
+      type: number
+      sql: ${total_sales_this_year} - ${total_sales_last_year} ;;
+      value_format: "$#,###.00"
+    }
+
+    measure: total_sales_yoy_pdiff  {
+      type: number
+      sql: ${total_sales_yoy_diff} / ${total_sales_last_year} ;;
+      value_format_name: percent_1
     }
 
     measure: total_sales_2019 {
