@@ -6,6 +6,7 @@ view: one_row_table {
        , 'Back' AS back_button_2
        , 'Logo' AS logo
        , 'SKU Profitability View' AS sku_profitability_view
+       , 'Monthly Executive View' AS monthly_executive_view
        ;;
   }
 
@@ -42,6 +43,12 @@ view: one_row_table {
     type: string
     sql: ${TABLE}.sku_profitability_view ;;
     html: <a href="/dashboards-next/161">{{ value }}</a> ;;
+  }
+
+  dimension: monthly_executive_view {
+    type: string
+    sql: ${TABLE}.monthly_executive_view ;;
+    html: <a href="/dashboards-next/174">{{ value }}</a> ;;
   }
 
   set: detail {
