@@ -235,7 +235,7 @@ view: superstore_orders {
     measure: total_profit {
       type: sum
       sql: ${profit_in} ;;
-      value_format: "#,###.00"
+      value_format: "$#,###.00"
     }
 
   measure: total_profit_this_year_in  {
@@ -419,11 +419,29 @@ view: superstore_orders {
       value_format: "$#,###.00"
     }
 
-    measure: adjusted_margin {
+    measure: gross_margin {
       type: number
-      sql: 3.5000*(${total_profit}/${total_sales})  ;;
+      sql: ((1.000*${total_profit})/(1.000*${total_sales}))  ;;
       value_format: "0.00%"
     }
+
+  measure: gross_margin_2019 {
+    type: number
+    sql: (1.000*${total_profit_2019})/NULLIF((1.000*${total_sales_2019}),0) ;;
+    value_format: "0.00%"
+  }
+
+  measure: gross_margin_2020 {
+    type: number
+    sql: (1.000*${total_profit_2020})/NULLIF((1.000*${total_sales_2020}),0) ;;
+    value_format: "0.00%"
+  }
+
+  measure: gross_margin_2021 {
+    type: number
+    sql: (1.000*${total_profit_2021})/NULLIF((1.000*${total_sales_2021}),0) ;;
+    value_format: "0.00%"
+  }
 
     measure: average_sales {
       type: average
@@ -546,8 +564,8 @@ view: superstore_orders {
         value: "average_quantity"
       }
       allowed_value: {
-        label: "Adjusted Margin"
-        value: "adjusted_margin"
+        label: "Gross Margin"
+        value: "gross_margin"
       }
     }
 
@@ -567,8 +585,8 @@ view: superstore_orders {
             THEN ${total_quantity}
             WHEN {% parameter metric_to_view %} = 'average_quantity'
             THEN ${average_quantity}
-            WHEN {% parameter metric_to_view %} = 'adjusted_margin'
-            THEN ${adjusted_margin}
+            WHEN {% parameter metric_to_view %} = 'gross_margin'
+            THEN ${gross_margin}
             ELSE NULL
           END ;;
       value_format_name: "usd"
