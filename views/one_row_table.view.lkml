@@ -5,8 +5,8 @@ view: one_row_table {
          'Back' AS back_button
        , 'Back' AS back_button_2
        , 'Logo' AS logo
-       , 'SKU Profitability View' AS sku_profitability_view
-       , 'Yearly Executive View' AS monthly_executive_view
+       , 'SKU Profitability' AS sku_profitability_view
+       , 'Yearly Executive' AS monthly_executive_view
        ;;
   }
 
