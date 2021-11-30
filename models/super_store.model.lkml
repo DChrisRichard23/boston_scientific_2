@@ -11,6 +11,7 @@ datagroup: super_store_default_datagroup {
 
 persist_with: super_store_default_datagroup
 
+
 explore: superstore_orders {
   label: "Orders"
   join: one_row_table {
@@ -29,3 +30,16 @@ explore: superstore_orders {
     sql_on: ${superstore_orders.ship_date} = ${ship_date_table.date_raw} ;;
   }
 }
+
+# explore: +superstore_orders {
+#   aggregate_table: rollup__order_date_table_year_week {
+#     query: {
+#       dimensions: [order_date_table.year_week]
+#       measures: [total_profit]
+#     }
+
+#     materialization: {
+#       datagroup_trigger: super_store_default_datagroup
+#     }
+#   }
+# }
